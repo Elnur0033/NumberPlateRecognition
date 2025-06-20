@@ -9,16 +9,16 @@ def draw_border(img, top_left, bottom_right, color=(0, 255, 0), thickness=10, li
     x1, y1 = top_left
     x2, y2 = bottom_right
 
-    cv2.line(img, (x1, y1), (x1, y1 + line_length_y), color, thickness)  #-- top-left
+    cv2.line(img, (x1, y1), (x1, y1 + line_length_y), color, thickness)  
     cv2.line(img, (x1, y1), (x1 + line_length_x, y1), color, thickness)
 
-    cv2.line(img, (x1, y2), (x1, y2 - line_length_y), color, thickness)  #-- bottom-left
+    cv2.line(img, (x1, y2), (x1, y2 - line_length_y), color, thickness)  
     cv2.line(img, (x1, y2), (x1 + line_length_x, y2), color, thickness)
 
-    cv2.line(img, (x2, y1), (x2 - line_length_x, y1), color, thickness)  #-- top-right
+    cv2.line(img, (x2, y1), (x2 - line_length_x, y1), color, thickness)  
     cv2.line(img, (x2, y1), (x2, y1 + line_length_y), color, thickness)
 
-    cv2.line(img, (x2, y2), (x2, y2 - line_length_y), color, thickness)  #-- bottom-right
+    cv2.line(img, (x2, y2), (x2, y2 - line_length_y), color, thickness)  
     cv2.line(img, (x2, y2), (x2 - line_length_x, y2), color, thickness)
 
     return img
@@ -26,7 +26,6 @@ def draw_border(img, top_left, bottom_right, color=(0, 255, 0), thickness=10, li
 
 results = pd.read_csv('./test_interpolated.csv')
 
-# load video
 video_path = 'sample.mp4'
 cap = cv2.VideoCapture(video_path)
 
@@ -59,7 +58,6 @@ frame_nmr = -1
 
 cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
-# read frames
 ret = True
 while ret:
     ret, frame = cap.read()
@@ -72,11 +70,9 @@ while ret:
             draw_border(frame, (int(car_x1), int(car_y1)), (int(car_x2), int(car_y2)), (0, 255, 0), 25,
                         line_length_x=200, line_length_y=200)
 
-            # draw license plate
             x1, y1, x2, y2 = ast.literal_eval(df_.iloc[row_indx]['license_plate_bbox'].replace('[ ', '[').replace('   ', ' ').replace('  ', ' ').replace(' ', ','))
             cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 12)
 
-            # crop license plate
             license_crop = license_plate[df_.iloc[row_indx]['car_id']]['license_crop']
 
             H, W, _ = license_crop.shape
